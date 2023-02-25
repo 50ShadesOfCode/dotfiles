@@ -1,0 +1,12 @@
+#!/bin/bash
+
+get_player_volume(){
+    vol="$(playerctl volume)"
+    if [[ "$vol" -eq "No players found" ]]; then
+        echo "0"
+    else
+        echo $(bc <<< "$(playerctl volume)*100")
+    fi
+}
+
+get_player_volume

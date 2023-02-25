@@ -1,0 +1,17 @@
+#!/bin/bash
+
+EWW="eww -c $HOME/.config/eww/"
+focusmon=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .id')
+
+if [[ ! $(pidof eww) ]]; then
+    ${EWW} daemon
+    sleep 1
+fi
+
+hyprctl dispatch focusmonitor "$focusmon"
+source $HOME/.config/scripts/variables/load_envs;
+${EWW} open "sidebar$PRIMARY_MONITOR_ID"
+
+${EWW} open "bar0"
+${EWW} open "bar1"
+${EWW} open "bar2"

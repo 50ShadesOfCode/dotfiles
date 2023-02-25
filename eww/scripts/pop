@@ -1,0 +1,19 @@
+#!/bin/bash
+EWW_BIN="/usr/bin/eww -c $HOME/.config/eww"
+
+WIDGET="$10"
+
+popable_widgets=( "system" "audio_ctl" "calendar" )
+
+# Open widgets
+if ${EWW_BIN} windows | grep ^$WIDGET$ ; then
+    for name in "${popable_widgets[@]}"
+    do
+        ${EWW_BIN} close "${name}${focusmon}"
+    done
+    ${EWW_BIN} open "$WIDGET"
+
+elif ${EWW_BIN} windows | grep ^\*$WIDGET$ ; then
+    ${EWW_BIN} close "$WIDGET"
+else exit
+fi

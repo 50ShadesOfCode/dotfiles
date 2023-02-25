@@ -1,0 +1,27 @@
+#!/bin/bash
+
+
+down() {
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+volume=$(pamixer --get-volume)
+[$volume -gt 0 ] && volume=`expr $volume`  
+dunstify -a "VOLUME" "Decreasing to $volume%" -h int:value:"$volume" -i audio-volume-low-symbolic -r 2593 -u normal
+}
+
+up() {
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+volume=$(pamixer --get-volume)
+[ $volume -lt 100 ] && volume=`expr $volume`  
+dunstify -a "VOLUME" "Increasing to $volume%" -h int:value:"$volume" -i audio-volume-high-symbolic -r 2593 -u normal
+}
+
+mute() {
+wpctl set-muted @DEFAULT_AUDIO_SINK@ toggle
+dunstify -a "VOLUME" "Toggle mute"
+}
+
+case "$1" in
+  up) up;;
+  down) down;;
+  mute) mute;;
+esac
